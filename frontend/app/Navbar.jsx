@@ -52,7 +52,7 @@ const Navbar = () => {
   return (
     <>
       {/* 1st section */}
-      <nav className="w-screen h-20 md:h-56 bg-white md:shadow-sm">
+      <nav className="w-screen h-20 md:h-56 lg:h-48 bg-white md:shadow-sm">
         <div className="md:flex justify-between pt-5 px-10 hidden">
           <div>
             {/* Responsive logo */}
@@ -106,8 +106,8 @@ const Navbar = () => {
         </div>
 
         {/* Filter Section */}
-        <div className="mt-4 md:mt-16 flex items-center justify-center ">
-          <div className="w-[90%] flex items-center justify-center rounded-full border-2 shadow-md mx-5">
+        <div className="mt-4 md:mt-16 lg:mt-6 flex items-center justify-center ">
+          <div className="w-[90%] lg:w-[60%] flex items-center justify-center rounded-full border-2 shadow-md mx-5">
             <div className="flex items-center  w-full">
               {dynamicFilterItems.map((item, index) => (
                 <React.Fragment key={index}>
