@@ -24,8 +24,11 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar  />
-        {children}
+        <Navbar />
+        {/* h-20 md:h-48 lg:h-44 */}
+        <div className="absolute mt-40 md:mt-64 lg:mt-60">
+          {children}
+        </div>
       </body>
     </html>
   );

@@ -1,15 +1,16 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
-import Airbub_svg from '@/app/svg/Airbub_svg';
-import Airbub_logo_svg from '@/app/svg/Airbub_logo_svg';
-import Account_svg from '@/app/svg/account_svg';
+import Airbub_svg from '@/public/svg/Airbub_svg';
+import Airbub_logo_svg from '@/public/svg/Airbub_logo_svg';
+import Account_svg from '@/public/svg/account_svg';
 import { TfiWorld } from "react-icons/tfi";
 import { IoMdMenu } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { cn } from '@/lib/utils';
 import { FilterData } from '@/lib/filterData';
-import Left_arrow_svg from '@/app/svg/Left_arrow_svg';
-import Right_arrow_svg from '@/app/svg/Right_arrow_svg';
+import Left_arrow_svg from '@/public/svg/Left_arrow_svg';
+import Right_arrow_svg from '@/public/svg/Right_arrow_svg';
+import Link from 'next/link';
 
 const Navbar = () => {
   const scrollRef = useRef(null);
@@ -69,7 +70,7 @@ const Navbar = () => {
   return (
     <>
       {/* 1st section */}
-      <nav className="w-screen h-20 md:h-52 lg:h-48 bg-white md:shadow-sm">
+      <nav className="w-screen h-20 md:h-48 lg:h-44 bg-white md:shadow-sm fixed z-50">
         <div className="md:flex justify-between pt-5 lg:px-10 hidden">
           <div className='pl-6'>
             {/* Responsive logo */}
@@ -120,8 +121,8 @@ const Navbar = () => {
             </li>
           </ul>
         </div>
-
-        <div className="mt-4 md:mt-12 lg:mt-6 flex items-center justify-center ">
+        {/* Search Section */}
+        <div className="mt-3 md:mt-10 lg:mt-4 flex items-center justify-center ">
           <div className="w-[95%] lg:w-[60%] flex items-center justify-center rounded-full border-2 shadow-md ">
             <div className="flex items-center w-full">
               {dynamicFilterItems.map((item, index) => (
@@ -206,49 +207,46 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </nav>
 
-
-
-      {/* 2nd Section */}
-
-      <nav className="w-screen h-28 flex items-center justify-between px-2 md:px-10 overflow-hidden relative">
-        {/* Left Arrow Button (hidden on small screens) */}
-        {isLeftArrowVisible && (
+        {/* 2nd section */}
+        <div className="w-screen h-[84px] flex items-center justify-between px-2 md:px-10 overflow-hidden relative bg-white">
+          {/* Left Arrow Button (hidden on small screens) */}
+          {isLeftArrowVisible && (
+            <button
+              className="md:flex items-center justify-center w-12 h-12 rounded-full shadow-md cursor-pointer flex-shrink-0 hidden lg:flex"
+              onClick={() => handleScroll('left')}
+            >
+              <Left_arrow_svg />
+            </button>
+          )}
+          <div
+            ref={scrollRef}
+            className="flex-1 flex items-center justify-start overflow-x-auto whitespace-nowrap px-4 scrollbar-hide md:overflow-x-hidden"
+          >
+            {FilterData?.map((item, index) => (
+              <Link
+                href={item.href}
+                key={index}
+                className="flex flex-col items-center p-6 opacity-60 hover:opacity-100 cursor-pointer relative"
+              >
+                <img
+                  className="w-7"
+                  src={item.src}
+                  alt={item.title}
+                />
+                <p className="text-center py-1">{item.title}</p>
+              </Link>
+            ))}
+          </div>
+          {/* Right Arrow Button (hidden on small screens) */}
           <button
             className="md:flex items-center justify-center w-12 h-12 rounded-full shadow-md cursor-pointer flex-shrink-0 hidden lg:flex"
-            onClick={() => handleScroll('left')}
+            onClick={() => handleScroll('right')}
           >
-            <Left_arrow_svg />
+            <Right_arrow_svg />
           </button>
-        )}
-
-        {/* Mid section (scrollable on small screens, without scrollbar) */}
-        <div
-          ref={scrollRef}
-          className="flex-1 flex items-center justify-start overflow-x-auto whitespace-nowrap px-4 scrollbar-hide md:overflow-x-hidden"
-        >
-          {FilterData?.map((item, index) => (
-            <div key={index} className="flex flex-col items-center p-6 opacity-60 hover:opacity-100 cursor-pointer relative">
-              <img
-                className="w-7"
-                src={item.src}
-                alt={item.title}
-              />
-              <p className="text-center py-1">{item.title}</p>
-            </div>
-          ))}
         </div>
-
-        {/* Right Arrow Button (hidden on small screens) */}
-        <button
-          className="md:flex items-center justify-center w-12 h-12 rounded-full shadow-md cursor-pointer flex-shrink-0 hidden lg:flex"
-          onClick={() => handleScroll('right')}
-        >
-          <Right_arrow_svg />
-        </button>
       </nav>
-
     </>
   );
 };

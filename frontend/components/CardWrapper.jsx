@@ -1,8 +1,8 @@
 'use client';
 import React, { useState } from 'react';
-import Left_arrow_svg from '@/app/svg/Left_arrow_svg';
-import Right_arrow_svg from '@/app/svg/Right_arrow_svg';
-import Share_svg from '@/app/svg/share_svg';
+import Left_arrow_svg from '@/public/svg/Left_arrow_svg';
+import Right_arrow_svg from '@/public/svg/Right_arrow_svg';
+import Share_svg from '@/public/svg/share_svg';
 import { cn } from '@/lib/utils';
 
 const CardWrapper = ({ FilterData }) => {
