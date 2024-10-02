@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Airbub_svg from '@/app/svg/Airbub_svg';
 import Airbub_logo_svg from '@/app/svg/Airbub_logo_svg';
 import Account_svg from '@/app/svg/account_svg';
@@ -7,17 +7,16 @@ import { TfiWorld } from "react-icons/tfi";
 import { IoMdMenu } from "react-icons/io";
 import { CiSearch } from "react-icons/ci";
 import { cn } from '@/lib/utils';
-import { FilterData } from '@/lib/filterData'
-import Left_arrow_svg from '@/app/svg/Left_arrow_svg'
-import Right_arrow_svg from '@/app/svg/Right_arrow_svg'
-
-
+import { FilterData } from '@/lib/filterData';
+import Left_arrow_svg from '@/app/svg/Left_arrow_svg';
+import Right_arrow_svg from '@/app/svg/Right_arrow_svg';
 
 const Navbar = () => {
   const scrollRef = useRef(null);
-  const [hoveredIndex, setHoveredIndex] = useState(null)
-  const [mode, setMode] = useState(true)
+  const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [mode, setMode] = useState(true);
   const [isWhereModalOpen, setIsWhereModalOpen] = useState(false);
+  const [isLeftArrowVisible, setIsLeftArrowVisible] = useState(false);
 
   const filterItems = [
     { label: 'Where', placeholder: 'Search destinations', width: '35%', isModal: true, modalHandler: 'openWhereModal' },
@@ -25,12 +24,13 @@ const Navbar = () => {
     { label: 'Check out', placeholder: 'Add dates', width: '15%', isHidden: true },
     { label: 'Who', placeholder: 'Add guests', width: '30%', isSearchButton: true }
   ];
+
   const dynamicFilterItems = mode
     ? filterItems : [
       { label: 'Where', placeholder: 'Search destinations', width: '35%', isModal: true, modalHandler: 'openWhereModal' },
       { label: 'Date', placeholder: 'Add dates', width: '30%', isHidden: false },
       { label: 'Who', placeholder: 'Add guests', width: '35%', isSearchButton: true }
-    ]
+    ];
 
   // Function to open WhereModal
   const openWhereModal = () => {
@@ -49,12 +49,29 @@ const Navbar = () => {
     }
   };
 
+  // Check if the first item is visible
+  const checkScrollPosition = () => {
+    if (scrollRef.current) {
+      const scrollLeft = scrollRef.current.scrollLeft;
+      setIsLeftArrowVisible(scrollLeft > 0); // Show the left arrow only if scrolled right
+    }
+  };
+
+  useEffect(() => {
+    const refCurrent = scrollRef.current;
+    refCurrent.addEventListener('scroll', checkScrollPosition);
+
+    return () => {
+      refCurrent.removeEventListener('scroll', checkScrollPosition);
+    };
+  }, []);
+
   return (
     <>
       {/* 1st section */}
-      <nav className="w-screen h-20 md:h-56 lg:h-48 bg-white md:shadow-sm">
-        <div className="md:flex justify-between pt-5 px-10 hidden">
-          <div>
+      <nav className="w-screen h-20 md:h-52 lg:h-48 bg-white md:shadow-sm">
+        <div className="md:flex justify-between pt-5 lg:px-10 hidden">
+          <div className='pl-6'>
             {/* Responsive logo */}
             <span className="block lg:hidden">
               <Airbub_logo_svg />
@@ -65,9 +82,8 @@ const Navbar = () => {
           </div>
 
           {/* Navigation items */}
-          <div className="hidden md:flex lg:flex lg:relative lg:top-0 lg:w-auto lg:items-center lg:justify-start md:absolute md:top-20 md:w-full md:items-center md:justify-center">
-            <ul className="flex gap-3 text-lg text-center items-center">
-              {/* Stays Item */}
+          <div className="md:flex lg:flex lg:relative lg:top-0 lg:w-auto lg:items-center lg:justify-start md:absolute w-full md:top-16 md:items-center md:justify-center overflow-hidden">
+            <ul className="flex gap-2 text-lg text-center items-center flex-shrink-0 whitespace-nowrap max-w-full">
               <li
                 onClick={() => setMode(true)}
                 className={cn(
@@ -78,7 +94,6 @@ const Navbar = () => {
                 Stays
               </li>
 
-              {/* Experiences Item */}
               <li
                 onClick={() => setMode(false)}
                 className={cn(
@@ -91,7 +106,8 @@ const Navbar = () => {
             </ul>
           </div>
 
-          <ul className="flex gap-4 items-center">
+
+          <ul className="flex gap-4 items-center pr-6">
             <li className="flex items-center">Airbub your home</li>
             <li className="flex items-center">
               <TfiWorld aria-label="World Icon" />
@@ -105,10 +121,9 @@ const Navbar = () => {
           </ul>
         </div>
 
-        {/* Filter Section */}
-        <div className="mt-4 md:mt-16 lg:mt-6 flex items-center justify-center ">
-          <div className="w-[90%] lg:w-[60%] flex items-center justify-center rounded-full border-2 shadow-md mx-5">
-            <div className="flex items-center  w-full">
+        <div className="mt-4 md:mt-12 lg:mt-6 flex items-center justify-center ">
+          <div className="w-[95%] lg:w-[60%] flex items-center justify-center rounded-full border-2 shadow-md ">
+            <div className="flex items-center w-full">
               {dynamicFilterItems.map((item, index) => (
                 <React.Fragment key={index}>
                   <div
@@ -193,25 +208,30 @@ const Navbar = () => {
         </div>
       </nav>
 
+
+
       {/* 2nd Section */}
-      <nav className="w-screen h-28 flex items-center justify-between px-0 md:px-10 overflow-hidden">
+
+      <nav className="w-screen h-28 flex items-center justify-between px-2 md:px-10 overflow-hidden relative">
         {/* Left Arrow Button (hidden on small screens) */}
-        <button
-          className="md:flex items-center justify-center w-12 h-12 rounded-full shadow-md cursor-pointer flex-shrink-0 hidden lg:flex"
-          onClick={() => handleScroll('left')}
-        >
-          <Left_arrow_svg />
-        </button>
+        {isLeftArrowVisible && (
+          <button
+            className="md:flex items-center justify-center w-12 h-12 rounded-full shadow-md cursor-pointer flex-shrink-0 hidden lg:flex"
+            onClick={() => handleScroll('left')}
+          >
+            <Left_arrow_svg />
+          </button>
+        )}
 
         {/* Mid section (scrollable on small screens, without scrollbar) */}
         <div
           ref={scrollRef}
-          className="flex-1 flex items-center justify-start overflow-x-auto whitespace-nowrap px-4 scrollbar-hide"
+          className="flex-1 flex items-center justify-start overflow-x-auto whitespace-nowrap px-4 scrollbar-hide md:overflow-x-hidden"
         >
           {FilterData?.map((item, index) => (
-            <div key={index} className="flex flex-col items-center p-6 opacity-60 hover:opacity-100 cursor-pointer">
+            <div key={index} className="flex flex-col items-center p-6 opacity-60 hover:opacity-100 cursor-pointer relative">
               <img
-                className="w-8"
+                className="w-7"
                 src={item.src}
                 alt={item.title}
               />
@@ -228,10 +248,6 @@ const Navbar = () => {
           <Right_arrow_svg />
         </button>
       </nav>
-
-
-
-
 
     </>
   );
