@@ -4,7 +4,7 @@ import Airbub_logo_svg from '@/public/svg/Airbub_logo_svg';
 
 const Logo = () => {
   return (
-    <div className='pl-6'>
+    <div className='pl-6 md:pl-10'>
       {/* Responsive logo */}
       <span className="block lg:hidden">
         <Airbub_logo_svg />

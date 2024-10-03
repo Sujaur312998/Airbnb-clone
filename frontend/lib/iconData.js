@@ -8,7 +8,7 @@ export const iconData = [
             "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTEzMTA4OTQ5ODA0MDcwMTE4Mw%3D%3D/original/34eac43e-9e92-4aaf-97d4-eea9f1d53a88.png?im_w=1440&im_q=highq",
         ],
         price: 7,
-        unit:"per person",
+        unit: "per person",
         title: "Stay in Prince’s Purple Rain house",
         host: "Hosted by Wendy And LisaHosted by Wendy And Lisa"
     },
@@ -60,7 +60,7 @@ export const iconData = [
     }
 ]
 
-export const past_experience_icon=[
+export const past_experience_icon = [
     {
         src: [
 
@@ -72,7 +72,8 @@ export const past_experience_icon=[
         ],
 
         title: "Go VIP with Kevin Hart",
-        host: "Hosted by Kevin HartHosted by Kevin Hart"
+        host: "Hosted by Kevin HartHosted by Kevin Hart",
+        status: "Sold out"
 
     },
 
@@ -87,7 +88,8 @@ export const past_experience_icon=[
         ],
 
         title: "Train at the X-Mansion",
-        host: "Hosted by JubileeHosted by Jubilee"
+        host: "Hosted by JubileeHosted by Jubilee",
+        status: "Sold out"
 
     },
 
@@ -102,7 +104,8 @@ export const past_experience_icon=[
         ],
 
         title: "Live like Bollywood star Janhvi Kapoor",
-        host: "Hosted by Janhvi KapoorHosted by Janhvi Kapoor"
+        host: "Hosted by Janhvi KapoorHosted by Janhvi Kapoor",
+        status: "Sold out"
 
     },
 
@@ -117,7 +120,8 @@ export const past_experience_icon=[
         ],
 
         title: "Open the Olympic Games at Musée d’Orsay",
-        host: "Hosted by Mathieu LehanneurHosted by Mathieu Lehanneur"
+        host: "Hosted by Mathieu LehanneurHosted by Mathieu Lehanneur",
+        status: "Sold out"
 
     },
 
@@ -132,8 +136,8 @@ export const past_experience_icon=[
         ],
 
         title: "Wake up in the Musée d’Orsay",
-        host: "Hosted by Mathieu LehanneurHosted by Mathieu Lehanneur"
-
+        host: "Hosted by Mathieu LehanneurHosted by Mathieu Lehanneur",
+        status: "Sold out"
     },
 
     {
@@ -147,7 +151,8 @@ export const past_experience_icon=[
         ],
 
         title: "Make core memories with Inside Out 2",
-        host: "Hosted by JoyHosted by Joy"
+        host: "Hosted by JoyHosted by Joy",
+        status: "Sold out"
 
     },
 
@@ -162,8 +167,8 @@ export const past_experience_icon=[
         ],
 
         title: "Design your Incredibles Supersuit",
-        host: "Hosted by Edna ModeHosted by Edna Mode"
-
+        host: "Hosted by Edna ModeHosted by Edna Mode",
+        status: "Sold out"
     },
 
     {
@@ -177,8 +182,8 @@ export const past_experience_icon=[
         ],
 
         title: "Go on tour with Feid",
-        host: "Hosted by FeidHosted by Feid"
-
+        host: "Hosted by FeidHosted by Feid",
+        status: "Sold out"
     },
 
     {
@@ -192,7 +197,8 @@ export const past_experience_icon=[
         ],
 
         title: "Game with Khaby Lame",
-        host: "Hosted by Khaby LameHosted by Khaby Lame"
+        host: "Hosted by Khaby LameHosted by Khaby Lame",
+        status: "Sold out"
 
     },
 
@@ -207,8 +213,8 @@ export const past_experience_icon=[
         ],
 
         title: "Crash at the X-Mansion",
-        host: "Hosted by JubileeHosted by Jubilee"
-
+        host: "Hosted by JubileeHosted by Jubilee",
+        status: "Sold out"
     },
 
     {
@@ -222,7 +228,8 @@ export const past_experience_icon=[
         ],
 
         title: "Spend the night in the Ferrari Museum",
-        host: "Hosted by Marc GenéHosted by Marc Gené"
+        host: "Hosted by Marc GenéHosted by Marc Gené",
+        status: "Sold out"
 
     },
 
@@ -237,8 +244,8 @@ export const past_experience_icon=[
         ],
 
         title: "Drift off in the Up house",
-        host: "Hosted by Carl FredricksenHosted by Carl Fredricksen"
-
+        host: "Hosted by Carl FredricksenHosted by Carl Fredricksen",
+        status: "Sold out"
     },
 
     {
@@ -252,8 +259,8 @@ export const past_experience_icon=[
         ],
 
         title: "Shrek’s Swamp",
-        host: "Hosted by DonkeyHosted by Donkey"
-
+        host: "Hosted by DonkeyHosted by Donkey",
+        status: "Sold out"
     },
 
     {
@@ -267,8 +274,8 @@ export const past_experience_icon=[
         ],
 
         title: "Barbie’s Malibu DreamHouse, Ken’s Way",
-        host: "Hosted by KenHosted by Ken"
-
+        host: "Hosted by KenHosted by Ken",
+        status: "Sold out"
     },
 
     {
@@ -282,7 +289,8 @@ export const past_experience_icon=[
         ],
 
         title: "Ted Lasso’s Favorite Pub",
-        host: "Hosted by MaeHosted by Mae"
+        host: "Hosted by MaeHosted by Mae",
+        status: "Sold out"
 
     },
 
@@ -297,7 +305,8 @@ export const past_experience_icon=[
         ],
 
         title: "Houseplant Retreat",
-        host: "Hosted by Seth RogenHosted by Seth Rogen"
+        host: "Hosted by Seth RogenHosted by Seth Rogen",
+        status: "Sold out"
 
     },
 
@@ -312,7 +321,8 @@ export const past_experience_icon=[
         ],
 
         title: "Home Alone Holiday",
-        host: "Hosted by BuzzHosted by Buzz"
+        host: "Hosted by BuzzHosted by Buzz",
+        status: "Sold out"
 
     },
 
@@ -327,7 +337,8 @@ export const past_experience_icon=[
         ],
 
         title: "The Last Blockbuster",
-        host: "Hosted by SandiHosted by Sandi"
+        host: "Hosted by SandiHosted by Sandi",
+        status: "Sold out"
 
     }
 ]

@@ -5,6 +5,11 @@ export const FilterData = [
         src: "https://a0.muscache.com/im/pictures/mediaverse/category_icon/original/3e5243c8-4d15-4c6b-97e3-7ba2bb7bb880.png"
     },
     {
+        title: "Skiing",
+        href:"/skiing",
+        src: "https://a0.muscache.com/pictures/c8bba3ed-34c0-464a-8e6e-27574d20e4d2.jpg"
+    },
+    {
         title: "Rooms",
         href:"/rooms",
         src: "https://a0.muscache.com/pictures/7630c83f-96a8-4232-9a10-0398661e2e6f.jpg"

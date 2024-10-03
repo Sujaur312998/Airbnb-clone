@@ -5,7 +5,7 @@ import { IoMdMenu } from "react-icons/io";
 
 const UserAction = () => {
     return (
-        <ul className="flex gap-4 items-center pr-6">
+        <ul className="flex gap-4 items-center pr-6 md:pr-10">
             <li className="flex items-center">Airbub your home</li>
             <li className="flex items-center">
                 <TfiWorld aria-label="World Icon" />

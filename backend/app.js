@@ -5,7 +5,7 @@ const server = http.createServer(app)
 const cors = require('cors')
 const compression = require("compression")
 
-// const router = require('./src/router/router')
+const router = require('./src/router/router')
 
 
 require('dotenv').config()
@@ -18,7 +18,7 @@ app.use(compression())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// app.use('/api/', router)
+app.use('/api/', router)
 
 
 server.listen(process.env.PORT, () => {
