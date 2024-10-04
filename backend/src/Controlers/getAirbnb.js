@@ -2,16 +2,14 @@ const AIRBNBITEMS = require('../models/airbnbItemModel')
 
 // exports.addAirbnbItems = async (req, res) => {
 //     const { icon } = req.body
-//     // console.log(req.body);
 
 //     icon.map(async (item) => {
-//         const { pathName, src, title, host, status, isPresent } = item
+//         const { pathName, src, title, host, status, isPresent, price, unit } = item
 //         const _airbnb = new AIRBNBITEMS({
-//             pathName, src, title, host, status, isPresent
+//             pathName, src, title, host, status, isPresent, price, unit
 //         })
 //         await _airbnb.save()
 //     })
-
 // }
 
 exports.getAirbnb = async (req, res) => {
@@ -41,7 +39,7 @@ exports.getAirbnb = async (req, res) => {
 
             default:
                 const others = await AIRBNBITEMS.find({ pathName });
-                if (others.length  === 0) {
+                if (others.length === 0) {
                     return res.status(404).json({
                         success: false,
                         message: "No Airbnb items found for the given path name"

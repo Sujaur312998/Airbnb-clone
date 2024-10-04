@@ -8,7 +8,7 @@ const AIRBNBITEMS = new mongoose.Schema(
             required: true,
             trim: true,
         },
-        isPresent:{
+        isPresent: {
             type: Boolean
         },
         src: [
@@ -31,6 +31,10 @@ const AIRBNBITEMS = new mongoose.Schema(
             trim: true,
         },
         unit: {
+            type: String,
+            trim: true,
+        },
+        status: {
             type: String,
             trim: true,
         },

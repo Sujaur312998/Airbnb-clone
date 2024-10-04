@@ -1,24 +1,26 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Left_arrow_svg from '@/public/svg/Left_arrow_svg'
 import Right_arrow_svg from '@/public/svg/Right_arrow_svg'
 import Filter_svg from '@/public/svg/Filter_svg'
+import { useDispatch, useSelector } from 'react-redux'
+import RangeSlider from 'react-range-slider-input';
+import 'react-range-slider-input/dist/style.css';
 import { usePathname } from 'next/navigation'
-import Nouislider from 'nouislider-react';
-import 'nouislider/distribute/nouislider.css';
+import { f_value } from '@/app/redux/filterSlice'
 
 
 const IconNavigation = ({ isLeftArrowVisible, scrollRef, FilterData, handleScroll }) => {
-    const pathname = usePathname();
+    const pathName = usePathname();
     const [isModalOpen, setModalOpen] = useState(false);
     const handleModal = () => setModalOpen(!isModalOpen);
 
+    const dispatch = useDispatch()
 
+    const { minPrice, maxPrice, values, items } = useSelector(state => state.filter)
 
-    const [values, setValues] = useState([50, 500]);
-
-    const handleChange = (value) => {
-        setValues(value.map(v => parseInt(v)));
+    const handleChange = (newValues) => {
+        dispatch(f_value(newValues));
     };
 
 
@@ -60,7 +62,7 @@ const IconNavigation = ({ isLeftArrowVisible, scrollRef, FilterData, handleScrol
                 <Right_arrow_svg />
             </button>
             {
-                pathname !== '/' && (
+                pathName !== '/' && (
                     <div className='flex'>
                         <button
                             data-modal-target="default-modal"
@@ -114,7 +116,7 @@ const IconNavigation = ({ isLeftArrowVisible, scrollRef, FilterData, handleScrol
                                             <div className="w-8 h-8"></div>
                                         </div>
 
-                                        <div className="h-60 mx-6 mt-2 overflow-y-auto">
+                                        <div className="h-72 mx-6 mt-2 overflow-y-auto">
                                             <h1 className="font-semibold text-xl py-4">Type of place</h1>
                                             <div className="p-1 gap-6 flex items-center justify-evenly border rounded-xl shadow-md bg-white">
                                                 <button className="px-4 py-2 border-2 w-full border-gray-300 rounded-lg hover:bg-gray-100 focus:ring-2 focus:ring-black transition duration-200">
@@ -140,12 +142,14 @@ const IconNavigation = ({ isLeftArrowVisible, scrollRef, FilterData, handleScrol
 
                                                 {/* Range Slider */}
                                                 <div className="my-6 mx-5 ">
-                                                    <Nouislider
-                                                        range={{ min: 0, max: 1000 }}
-                                                        start={[50, 500]}
-                                                        connect
-                                                        onChange={handleChange}
+                                                    <RangeSlider
+                                                        min={minPrice}
+                                                        max={maxPrice}
+                                                        step={1}
+                                                        value={values}
+                                                        onInput={handleChange}
                                                     />
+
                                                     <div className="flex justify-between mt-2 text-sm text-gray-500">
                                                         <span>${values[0]}</span>
                                                         <span>${values[1]}</span>
@@ -163,7 +167,7 @@ const IconNavigation = ({ isLeftArrowVisible, scrollRef, FilterData, handleScrol
                                                 type="button"
                                                 className="py-2.5 px-5 ms-3 text-sm font-medium text-white bg-black focus:outline-none rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
                                             >
-                                                Show 1,000+ places
+                                                Show {items} places
                                             </button>
                                         </div>
                                     </div>

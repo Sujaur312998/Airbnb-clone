@@ -5,7 +5,7 @@ import Right_arrow_svg from '@/public/svg/Right_arrow_svg';
 import Share_svg from '@/public/svg/share_svg';
 import { cn } from '@/lib/utils';
 
-const CardWrapper = ({ FilterData }) => {
+const CardWrapper = ({ FilterData, maxPrice, minPrice }) => {
     const { src, title, host, price, unit, publish, status } = FilterData;
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isHovered, setIsHovered] = useState(false); // State to track hover
