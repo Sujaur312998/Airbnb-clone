@@ -3,11 +3,15 @@ import React, { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 import { FilterData } from '@/lib/filterData';
 import Logo from '@/components/Logo';
-import NavigationItemsFirst from '@/components/NavigationItemsFirst'
-import NavigationItemsSecond from '@/components/NavigationItemsSecond'
-import UserAction from '@/components/UserAction'
-import IconNavigation from '@/components/IconNavigation'
-import SearchSection from '@/components/SearchSection'
+import NavigationItemsFirst from '@/components/NavigationItemsFirst';
+import NavigationItemsSecond from '@/components/NavigationItemsSecond';
+import UserAction from '@/components/UserAction';
+import IconNavigation from '@/components/IconNavigation';
+import SearchSection from '@/components/SearchSection';
+import 'react-dates/initialize';
+import { DayPickerRangeController } from 'react-dates';
+import 'react-dates/lib/css/_datepicker.css';
+import moment from 'moment';
 
 const Navbar = () => {
   const scrollRef = useRef(null);
@@ -16,27 +20,35 @@ const Navbar = () => {
   const [isWhereModalOpen, setIsWhereModalOpen] = useState(false);
   const [isLeftArrowVisible, setIsLeftArrowVisible] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  
+
+  // Date Picker
+  const [startDate, setStartDate] = useState(null); // State to hold start date
+  const [endDate, setEndDate] = useState(null); // State to hold end date
+  const [focusedInput, setFocusedInput] = useState('startDate');
+
+  const isCurrentOrFutureMonth = (currentMonth) => {
+    return moment().isSameOrBefore(currentMonth, 'month');
+  };
 
   const filterItems = [
     { label: 'Where', placeholder: 'Search destinations', width: '35%', isModal: true, modalHandler: 'openWhereModal' },
-    { label: 'Check in', placeholder: 'Add dates', width: '15%', isHidden: true },
-    { label: 'Check out', placeholder: 'Add dates', width: '15%', isHidden: true },
-    { label: 'Who', placeholder: 'Add guests', width: '30%', isSearchButton: true }
+    { label: 'Check in', placeholder: 'Add dates', width: '15%', isModal: true, isHidden: true },
+    { label: 'Check out', placeholder: 'Add dates', width: '15%', isModal: true, isHidden: true },
+    { label: 'Who', placeholder: 'Add guests', width: '30%', isModal: true, isSearchButton: true }
   ];
 
   const dynamicFilterItems = mode
     ? filterItems : [
       { label: 'Where', placeholder: 'Search destinations', width: '35%', isModal: true, modalHandler: 'openWhereModal' },
-      { label: 'Date', placeholder: 'Add dates', width: '30%', isHidden: false },
-      { label: 'Who', placeholder: 'Add guests', width: '35%', isSearchButton: true }
+      { label: 'Date', placeholder: 'Add dates', width: '30%', isModal: true, isHidden: false },
+      { label: 'Who', placeholder: 'Add guests', width: '35%', isModal: true, isSearchButton: true }
     ];
 
-  // Function to open WhereModal
   const openWhereModal = () => {
     setIsWhereModalOpen(true);
   };
 
-  // Function to close WhereModal
   const closeWhereModal = () => {
     setIsWhereModalOpen(false);
   };
@@ -48,7 +60,6 @@ const Navbar = () => {
     }
   };
 
-  // Check if the first item is visible
   const checkScrollPosition = () => {
     if (scrollRef.current) {
       const scrollLeft = scrollRef.current.scrollLeft;
@@ -77,41 +88,92 @@ const Navbar = () => {
   }, []);
 
   const handleMode = () => {
-    setMode(!mode)
-  }
+    setMode(!mode);
+  };
 
   return (
     <>
-      {/* 1st section */}
       <nav className="w-screen h-20 md:h-48 lg:h-44 bg-white md:shadow-sm fixed z-50">
         <div className="md:flex justify-between pt-5 lg:px-10 hidden">
           <Logo />
-          {/* Navigation items */}
           {
-            !isScrolled ?
+            !isScrolled ? (
               <NavigationItemsFirst mode={mode} handleMode={handleMode} />
-              : <NavigationItemsSecond />
+            ) : (
+              <NavigationItemsSecond />
+            )
           }
           <UserAction />
         </div>
 
         {/* Search Section */}
-        {
-          !isScrolled &&
-          <div className={cn(
-            "mt-3 lg:mt-4 flex items-center justify-center",
-            isScrolled ? 'md:mt-0' : 'md:mt-10'
-          )}>
-            <SearchSection
-              dynamicFilterItems={dynamicFilterItems} 
-              openWhereModal={openWhereModal} 
-              hoveredIndex ={hoveredIndex } 
-              setHoveredIndex ={setHoveredIndex } 
-            />
-          </div>
-        }
+        <div className={cn(
+          "mt-3 lg:mt-4 flex items-center justify-center relative", // Changed to relative for positioning
+          isScrolled ? 'md:mt-0' : 'md:mt-10'
+        )}>
+          <SearchSection
+            dynamicFilterItems={dynamicFilterItems}
+            openWhereModal={openWhereModal}
+            hoveredIndex={hoveredIndex}
+            setHoveredIndex={setHoveredIndex}
+          />
 
-        {/* 2nd section  isLeftArrowVisible,scrollRef,FilterData*/}
+          {/* Modal positioned below SearchSection */}
+          {
+            isWhereModalOpen && (
+              <div className="absolute left-1/2 top-16 transform -translate-x-1/2 mt-2 w-full max-w-2xl z-50 rounded-2xl">
+                <div className="relative bg-white shadow dark:bg-gray-700 rounded-2xl">
+                  {/* Modal Header */}
+                  <div className="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
+                    <h3 className="text-md font-semibold text-gray-800 dark:text-white flex items-center justify-center w-full">
+                      <div className="flex gap-3 p-1 rounded-full bg-stone-100">
+                        <button className="px-8 py-1 bg-white rounded-full">Date</button>
+                        <button className="px-8 py-1 hover:bg-white rounded-full">Month</button>
+                        <button className="px-8 py-1 hover:bg-white rounded-full">Year</button>
+                      </div>
+                    </h3>
+                    <button onClick={closeWhereModal} className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex justify-center items-center">
+                      <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                      </svg>
+                      <span className="sr-only">Close modal</span>
+                    </button>
+                  </div>
+
+                  {/* Modal Body */}
+                  <div className="p-4 md:p-5 space-y-4">
+                    <DayPickerRangeController
+                      startDate={startDate}
+                      endDate={endDate}
+                      onDatesChange={({ startDate, endDate }) => {
+                        setStartDate(startDate);
+                        setEndDate(endDate);
+                      }}
+                      onFocusChange={focusedInput => {
+                        if (!focusedInput) {
+                          setFocusedInput('startDate'); // If no focus, return to startDate focus
+                        } else {
+                          setFocusedInput(focusedInput);
+                        }
+                      }}
+                      focusedInput={focusedInput}
+                      noBorder
+                      hideKeyboardShortcutsPanel
+                      numberOfMonths={2}
+                      orientation="horizontal"
+                      initialVisibleMonth={() => moment()}
+                      navPrev={isCurrentOrFutureMonth(moment()) ? null : <div className="DayPickerNavigation_buttonPrev">‹</div>}
+                      isOutsideRange={day => moment().diff(day) > 0}
+                    />
+                  </div>
+                </div>
+              </div>
+
+            )
+          }
+        </div>
+
+        {/* 2nd section  isLeftArrowVisible,scrollRef,FilterData */}
         <IconNavigation
           isLeftArrowVisible={isLeftArrowVisible}
           scrollRef={scrollRef}

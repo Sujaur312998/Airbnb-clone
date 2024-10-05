@@ -1,7 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@layer base {
+
+
+@r base {
   :root {
     --background: 0 0% 100%;
     --foreground: 0 0% 3.9%;
@@ -29,6 +31,7 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -56,20 +59,97 @@
     --chart-5: 340 75% 55%
   }
 }
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
 }
 
 .overflow-x-auto::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for Chrome, Safari, and Opera */
+  display: none;
+  /* Hide scrollbar for Chrome, Safari, and Opera */
 }
 
 .overflow-x-auto {
-  -ms-overflow-style: none;  /* Hide scrollbar for Internet Explorer and Edge */
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
+  -ms-overflow-style: none;
+  /* Hide scrollbar for Internet Explorer and Edge */
+  scrollbar-width: none;
+  /* Hide scrollbar for Firefox */
+}
+
+/* Calendar Day Styles */
+.CalendarDay {
+  border: none !important;             /* No borders for individual days */
+  border-radius: 0 !important;         /* Remove default rounding */
+  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+}
+
+.CalendarDay:hover {
+  background-color: #e0e0e0 !important; /* Gray background on hover */
+  border-radius: 50% !important;        /* Fully round on hover */
+}
+
+/* Selected Date Styles */
+.CalendarDay__selected_start,
+.CalendarDay__selected_end {
+  background-color: #3d3f41 !important; /* Blue background for selected dates */
+  color: white !important;
+  border: none;
+}
+
+.CalendarDay__selected_start {
+  border-top-left-radius: 50% !important;
+  border-bottom-left-radius: 50% !important;  /* Round left corners */
+}
+
+.CalendarDay__selected_end {
+  border-top-right-radius: 50% !important;
+  border-bottom-right-radius: 50% !important; /* Round right corners */
+}
+
+.CalendarDay__selected_start:hover,
+.CalendarDay__selected_end:hover {
+  border-radius: 50% !important; /* Fully round on hover */
+}
+
+/* Span Between Selected Dates */
+.CalendarDay__selected_span {
+  background-color: #e0e0e0 !important; /* Light green for selected range */
+  color: white !important;
+  border-radius: 0 !important;   
+  border: none;
+}
+
+/* Hovered Dates Between Selection */
+.CalendarDay__hovered_span {
+  background-color: #e0e0e0 !important; /* Gray on hover */
+  color: black !important;
+}
+
+/* Calendar Container */
+.DayPicker {
+  background-color: white;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Navigation Buttons */
+.DayPickerNavigation_button {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  color: #0070f3;
+  padding: 6px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.2s ease-in-out;
+}
+
+.DayPickerNavigation_button:hover {
+  background-color: #f0f0f0; /* Light gray on hover */
 }

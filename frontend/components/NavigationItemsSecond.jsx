@@ -1,9 +1,12 @@
 import React from 'react'
 import { CiSearch } from "react-icons/ci";
 
-const NavigationItemsSecond = () => {
+const NavigationItemsSecond = ({ openWhereModal }) => {
   return (
-    <div className="w-[40%] flex items-center justify-between rounded-full border transition-transform duration-500 ease-in-out opacity-100 scale-100 translate-y-0 border-gray-300 shadow-sm">
+    <div
+      onClick={openWhereModal}
+      className="w-[40%] cursor-pointer flex items-center justify-between rounded-full border transition-transform duration-500 ease-in-out opacity-100 scale-100 translate-y-0 border-gray-300 shadow-sm"
+    >
       <div className="px-3 py-2 flex-1 overflow-hidden whitespace-nowrap text-ellipsis text-sm">Anywhere</div>
       <span className="mx-2 h-6 border-l border-gray-400"></span>
       <div className="px-3 py-2 flex-1 overflow-hidden whitespace-nowrap text-ellipsis text-sm">Any week</div>
