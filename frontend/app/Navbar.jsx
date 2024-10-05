@@ -13,41 +13,83 @@ import { DayPickerRangeController } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 import moment from 'moment';
 import { region } from '@/lib/filterData'
+import { s_startDate, s_endDate } from '@/app/redux/searchSlice'
+import { useDispatch, useSelector } from 'react-redux';
 
 const Navbar = () => {
   const scrollRef = useRef(null);
+  const dispatch = useDispatch()
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [hoverandClickindex, setHoverandCkickedIndex] = useState(null);
-
   const [mode, setMode] = useState(true);
   const [isWhereModalOpen, setIsWhereModalOpen] = useState(false);
   const [isLeftArrowVisible, setIsLeftArrowVisible] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
-
-
   // Date Picker
-  const [startDate, setStartDate] = useState(null); // State to hold start date
-  const [endDate, setEndDate] = useState(null); // State to hold end date
+  const { startDate, endDate } = useSelector(state => state.search)
   const [focusedInput, setFocusedInput] = useState('startDate');
 
   const isCurrentOrFutureMonth = (currentMonth) => {
     return moment().isSameOrBefore(currentMonth, 'month');
   };
 
-  const filterItems = [
+  let filterItems = [
     { label: 'Where', placeholder: 'Search destinations', width: '35%', isModal: true, modalHandler: 'openWhereModal' },
     { label: 'Check in', placeholder: 'Add dates', width: '15%', isModal: true, isHidden: true },
     { label: 'Check out', placeholder: 'Add dates', width: '15%', isModal: true, isHidden: true },
     { label: 'Who', placeholder: 'Add guests', width: '30%', isModal: true, isSearchButton: true }
   ];
 
-  const dynamicFilterItems = mode
-    ? filterItems : [
+  const [data, setData] = useState(filterItems)
+
+  let dynamicFilterItems = mode
+    ? data : [
       { label: 'Where', placeholder: 'Search destinations', width: '35%', isModal: true, modalHandler: 'openWhereModal' },
       { label: 'Date', placeholder: 'Add dates', width: '30%', isModal: true, isHidden: false },
       { label: 'Who', placeholder: 'Add guests', width: '35%', isModal: true, isSearchButton: true }
     ];
+
+
+
+  useEffect(() => {
+    const currentYear = new Date().getFullYear();
+    const list = [...data]
+
+    const s_dateObj = new Date(startDate);
+    const s_year = s_dateObj.getFullYear();
+    const s_day = s_dateObj.getDate();
+    const s_month = s_dateObj.toLocaleString('default', { month: 'short' });
+
+    if (s_year < currentYear) return
+    list[1].placeholder = `${s_month} ${s_day}`
+
+
+    setData(list);
+
+
+    const e_dateObj = new Date(endDate);
+    const e_day = e_dateObj.getDate();
+    const e_month = e_dateObj.toLocaleString('default', { month: 'short' });
+    const e_year = e_dateObj.getFullYear();
+
+    if (e_year < currentYear) return
+    list[2].placeholder = `${e_month} ${e_day}`
+
+
+    // dispatch(s_checkIn(`${s_month} ${s_day}`))
+    // dispatch(s_checkOut(`${e_month} ${e_day}`))
+    // filterItems[1].placeholder = `${s_month} ${s_day}`
+    // filterItems[2].placeholder = `${e_month} ${e_day}`
+
+
+
+    setData(list);
+
+
+    // setData()
+
+  }, [startDate, endDate]);
 
   const openWhereModal = () => {
     setIsWhereModalOpen(true);
@@ -134,10 +176,10 @@ const Navbar = () => {
               <div className="grid grid-cols-3 ">
                 {region?.map((item, index) => (
                   <div key={index} className="flex flex-col items-center group transition duration-300">
-                    <div className="w-[80%] h-auto rounded-xl overflow-hidden border border-transparent group-hover:border-rose-600"> 
+                    <div className="w-[80%] h-auto rounded-xl overflow-hidden border border-transparent group-hover:border-rose-600">
                       <img src={item.src} alt={item.title} className="w-full h-auto" />
                     </div>
-                    <p className="text-center mt-2">{item.title}</p>
+                    <p className="text-center mb-3">{item.title}</p>
                   </div>
                 ))}
               </div>
@@ -147,8 +189,8 @@ const Navbar = () => {
                   startDate={startDate}
                   endDate={endDate}
                   onDatesChange={({ startDate, endDate }) => {
-                    setStartDate(startDate);
-                    setEndDate(endDate);
+                    dispatch(s_startDate(startDate))
+                    dispatch(s_endDate(endDate))
                   }}
                   onFocusChange={focusedInput => {
                     if (!focusedInput) {

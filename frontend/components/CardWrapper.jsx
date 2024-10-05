@@ -4,11 +4,13 @@ import Left_arrow_svg from '@/public/svg/Left_arrow_svg';
 import Right_arrow_svg from '@/public/svg/Right_arrow_svg';
 import Share_svg from '@/public/svg/share_svg';
 import { cn } from '@/lib/utils';
+import { useSelector } from 'react-redux';
 
 const CardWrapper = ({ FilterData, maxPrice, minPrice }) => {
     const { src, title, host, price, unit, publish, status } = FilterData;
     const [currentIndex, setCurrentIndex] = useState(0);
-    const [isHovered, setIsHovered] = useState(false); // State to track hover
+    const [isHovered, setIsHovered] = useState(false);
+    const { tax } = useSelector(state => state.filter)
 
     // Function to go to the next image
     const goToNext = () => {
@@ -79,7 +81,9 @@ const CardWrapper = ({ FilterData, maxPrice, minPrice }) => {
             <div className="text-left mt-4 w-full">
                 <p className="font-semibold text-md">{title}</p>
                 <p className="text-gray-500 text-sm">{host ? `${host}` : null}</p>
-                <p className="text-gray-700">{price || unit ? `$${price} ${unit}` : null}</p>
+                <p className="text-gray-700">{price || unit ?
+                    `$${tax ? Math.floor(price + (price * 10) / 100) : price} ${unit}`
+                    : null}</p>
                 <p className="text-black font-semibold">{publish ? `${publish}` : null}</p>
                 <p className="text-black font-semibold">{status ? `${status}` : null}</p>
             </div>

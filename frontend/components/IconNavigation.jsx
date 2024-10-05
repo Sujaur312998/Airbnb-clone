@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import RangeSlider from 'react-range-slider-input';
 import 'react-range-slider-input/dist/style.css';
 import { usePathname } from 'next/navigation'
-import { f_value } from '@/app/redux/filterSlice'
+import { f_value, f_tax } from '@/app/redux/filterSlice'
 
 
 const IconNavigation = ({ isLeftArrowVisible, scrollRef, FilterData, handleScroll }) => {
@@ -17,11 +17,15 @@ const IconNavigation = ({ isLeftArrowVisible, scrollRef, FilterData, handleScrol
 
     const dispatch = useDispatch()
 
-    const { minPrice, maxPrice, values, items } = useSelector(state => state.filter)
+    const { minPrice, maxPrice, values, items, tax } = useSelector(state => state.filter)
 
     const handleChange = (newValues) => {
         dispatch(f_value(newValues));
     };
+
+    const handleTax = () => {
+        dispatch(f_tax())
+    }
 
 
     return (
@@ -174,15 +178,20 @@ const IconNavigation = ({ isLeftArrowVisible, scrollRef, FilterData, handleScrol
                                 </div>
                             </div>
                         )}
-                        <div
+                        <button
+                            onClick={handleTax}
                             className="md:flex gap-1 items-center justify-center ml-2 w-64 h-12 rounded-xl cursor-pointer flex-shrink-0 flex px-2 py-2 border hover:border-2 hover:ring-1 hover:ring-black text-md "
                         >
                             <span>Display total before taxes</span>
                             <label className="inline-flex items-center cursor-pointer">
-                                <input type="checkbox" value="" className="sr-only peer" />
+                                <input
+                                    type="checkbox"
+                                    onClick={handleTax}
+                                    value="" checked={tax} className="sr-only peer" readOnly />
                                 <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none dark:peer-focus:ring-black rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-black"></div>
                             </label>
-                        </div>
+                        </button>
+
                     </div>
                 )
             }

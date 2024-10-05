@@ -1,11 +1,14 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CiSearch } from "react-icons/ci"
 import { cn } from '@/lib/utils'
-
+import { useSelector } from 'react-redux'
 
 
 
 const SearchSection = ({ dynamicFilterItems, openWhereModal, hoveredIndex, setHoveredIndex, setHoverandCkickedIndex }) => {
+    // const { checkInDate, checkOutDate } = useSelector(state => state.search)
+    // console.log(checkInDate, checkOutDate);
+
     return (
         <div className="w-[90%] lg:w-[60%] flex items-center justify-center rounded-full border-2 shadow-md ">
             <div className="flex items-center w-full">
