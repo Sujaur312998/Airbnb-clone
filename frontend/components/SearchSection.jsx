@@ -5,8 +5,7 @@ import { cn } from '@/lib/utils'
 
 
 
-const SearchSection = ({ dynamicFilterItems, openWhereModal, hoveredIndex, setHoveredIndex }) => {
-
+const SearchSection = ({ dynamicFilterItems, openWhereModal, hoveredIndex, setHoveredIndex, setHoverandCkickedIndex }) => {
     return (
         <div className="w-[90%] lg:w-[60%] flex items-center justify-center rounded-full border-2 shadow-md ">
             <div className="flex items-center w-full">
@@ -20,7 +19,11 @@ const SearchSection = ({ dynamicFilterItems, openWhereModal, hoveredIndex, setHo
                                 item.isHidden ? 'hidden md:flex' : 'flex',
                                 index === dynamicFilterItems.length - 1 ? 'hidden md:flex' : ''
                             )}
-                            onClick={item.isModal ? openWhereModal : undefined}
+                            onClick={() => {
+                                openWhereModal()
+                                setHoverandCkickedIndex(index)
+                            }
+                            }
                         >
                             <div className={cn(index === 0 ? 'md:pl-6' : '')}>
                                 <div className="px-1 flex">

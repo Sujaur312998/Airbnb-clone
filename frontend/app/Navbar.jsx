@@ -12,15 +12,19 @@ import 'react-dates/initialize';
 import { DayPickerRangeController } from 'react-dates';
 import 'react-dates/lib/css/_datepicker.css';
 import moment from 'moment';
+import { region } from '@/lib/filterData'
 
 const Navbar = () => {
   const scrollRef = useRef(null);
   const [hoveredIndex, setHoveredIndex] = useState(null);
+  const [hoverandClickindex, setHoverandCkickedIndex] = useState(null);
+
   const [mode, setMode] = useState(true);
   const [isWhereModalOpen, setIsWhereModalOpen] = useState(false);
   const [isLeftArrowVisible, setIsLeftArrowVisible] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  
+
+
 
   // Date Picker
   const [startDate, setStartDate] = useState(null); // State to hold start date
@@ -91,6 +95,85 @@ const Navbar = () => {
     setMode(!mode);
   };
 
+  const handleSearchSection = () => {
+
+    return (
+      <div className="relative bg-white shadow dark:bg-gray-700 rounded-2xl ">
+
+        <div className="flex items-center justify-between pt-4 rounded-t dark:border-gray-600 px-8 ">
+          <h3 className={
+            cn(
+              "text-md font-semibold text-gray-800 dark:text-white flex items-center  w-full",
+              hoverandClickindex === 0 ? "justify-between" : "justify-center"
+            )
+          }>
+            {
+              hoverandClickindex == 0 ?
+                <div className="flex gap-3 p-1 ">
+                  Search by region
+                </div> :
+                hoverandClickindex == 3 ? <></> :
+                  <div className="flex gap-3 p-1 rounded-full bg-stone-100">
+                    <button className="px-8 py-1 bg-white rounded-full">Date</button>
+                    <button className="px-8 py-1 hover:bg-white rounded-full">Month</button>
+                    <button className="px-8 py-1 hover:bg-white rounded-full">Year</button>
+                  </div>
+            }
+          </h3>
+          <button onClick={closeWhereModal} className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex justify-center items-center">
+            <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span className="sr-only">Close modal</span>
+          </button>
+        </div>
+
+        <div className="p-4 md:p-5  overflow-y-auto max-h-96">
+          {
+            hoverandClickindex == 0 ?
+              <div className="grid grid-cols-3 ">
+                {region?.map((item, index) => (
+                  <div key={index} className="flex flex-col items-center group transition duration-300">
+                    <div className="w-[80%] h-auto rounded-xl overflow-hidden border border-transparent group-hover:border-rose-600"> 
+                      <img src={item.src} alt={item.title} className="w-full h-auto" />
+                    </div>
+                    <p className="text-center mt-2">{item.title}</p>
+                  </div>
+                ))}
+              </div>
+              :
+              hoverandClickindex == 3 ? <></> :
+                <DayPickerRangeController
+                  startDate={startDate}
+                  endDate={endDate}
+                  onDatesChange={({ startDate, endDate }) => {
+                    setStartDate(startDate);
+                    setEndDate(endDate);
+                  }}
+                  onFocusChange={focusedInput => {
+                    if (!focusedInput) {
+                      setFocusedInput('startDate'); // If no focus, return to startDate focus
+                    } else {
+                      setFocusedInput(focusedInput);
+                    }
+                  }}
+                  focusedInput={focusedInput}
+                  noBorder
+                  hideKeyboardShortcutsPanel
+                  numberOfMonths={2}
+                  orientation="horizontal"
+                  initialVisibleMonth={() => moment()}
+                  navPrev={isCurrentOrFutureMonth(moment()) ? null : <div className="DayPickerNavigation_buttonPrev">‹</div>}
+                  isOutsideRange={day => moment().diff(day) > 0}
+                />
+          }
+
+        </div>
+      </div>
+    )
+  }
+
+
   return (
     <>
       <nav className="w-screen h-20 md:h-48 lg:h-44 bg-white md:shadow-sm fixed z-50">
@@ -116,59 +199,15 @@ const Navbar = () => {
             openWhereModal={openWhereModal}
             hoveredIndex={hoveredIndex}
             setHoveredIndex={setHoveredIndex}
+            setHoverandCkickedIndex={setHoverandCkickedIndex}
           />
 
           {/* Modal positioned below SearchSection */}
           {
             isWhereModalOpen && (
               <div className="absolute left-1/2 top-16 transform -translate-x-1/2 mt-2 w-full max-w-2xl z-50 rounded-2xl">
-                <div className="relative bg-white shadow dark:bg-gray-700 rounded-2xl">
-                  {/* Modal Header */}
-                  <div className="flex items-center justify-between p-4 md:p-5 rounded-t dark:border-gray-600">
-                    <h3 className="text-md font-semibold text-gray-800 dark:text-white flex items-center justify-center w-full">
-                      <div className="flex gap-3 p-1 rounded-full bg-stone-100">
-                        <button className="px-8 py-1 bg-white rounded-full">Date</button>
-                        <button className="px-8 py-1 hover:bg-white rounded-full">Month</button>
-                        <button className="px-8 py-1 hover:bg-white rounded-full">Year</button>
-                      </div>
-                    </h3>
-                    <button onClick={closeWhereModal} className="text-gray-400 hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 flex justify-center items-center">
-                      <svg className="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
-                      </svg>
-                      <span className="sr-only">Close modal</span>
-                    </button>
-                  </div>
-
-                  {/* Modal Body */}
-                  <div className="p-4 md:p-5 space-y-4">
-                    <DayPickerRangeController
-                      startDate={startDate}
-                      endDate={endDate}
-                      onDatesChange={({ startDate, endDate }) => {
-                        setStartDate(startDate);
-                        setEndDate(endDate);
-                      }}
-                      onFocusChange={focusedInput => {
-                        if (!focusedInput) {
-                          setFocusedInput('startDate'); // If no focus, return to startDate focus
-                        } else {
-                          setFocusedInput(focusedInput);
-                        }
-                      }}
-                      focusedInput={focusedInput}
-                      noBorder
-                      hideKeyboardShortcutsPanel
-                      numberOfMonths={2}
-                      orientation="horizontal"
-                      initialVisibleMonth={() => moment()}
-                      navPrev={isCurrentOrFutureMonth(moment()) ? null : <div className="DayPickerNavigation_buttonPrev">‹</div>}
-                      isOutsideRange={day => moment().diff(day) > 0}
-                    />
-                  </div>
-                </div>
+                {handleSearchSection()}
               </div>
-
             )
           }
         </div>
